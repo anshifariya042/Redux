@@ -1,0 +1,40 @@
+const {createStore,combineReducers}=require ('redux');
+
+function counterReducer(state={count:0},action){
+    switch(action.type){
+        case'increment':
+           return {count:state.count+1};
+        case 'decrement':
+            return {count:state.count-1};
+        default:
+            return state;       
+    }
+};
+
+function userReducer(state={isLoggedIn:false},action){
+    switch(action.type){
+        case 'Login':
+            return {isLoggedIn:true};
+        case 'LogOut':
+            return {isLoggedIn:false};    
+    default:
+        return state;
+    }
+}
+
+const rootReducer=combineReducers({
+    counter:counterReducer,
+    user:userReducer,
+});
+
+const store = createStore(rootReducer);
+
+
+store.subscribe(()=>{
+    console.log("current state:",store.getState());
+})
+
+store.dispatch({ type: 'decrement' });
+store.dispatch({ type: 'Login' });
+store.dispatch({ type: 'increment' });
+store.dispatch({ type: 'LogOut' });
