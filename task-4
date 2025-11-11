@@ -1,0 +1,81 @@
+//access.jsx
+
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+function Access() {  
+  const count = useSelector((state) => state.count);
+  const dispatch = useDispatch();
+
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <h2>Count: {count}</h2>
+      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+      <button onClick={()=>dispatch({type:"reset"})}>.</button>
+    </div>
+  );
+}
+
+export default Access;
+
+
+
+//store.js
+
+import { createStore } from 'redux';
+
+const initialState = { count: 0 };
+
+function counterReducer(state = initialState, action) {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 };
+    case 'decrement':
+      return { count: state.count - 1 };
+    case 'reset':
+        return {count:state=0}  
+    default:
+      return state;
+  }
+}
+
+const store = createStore(counterReducer);
+
+export default store;
+
+
+//App.jsx
+
+import React from 'react';
+import Access from './access';  
+
+function App() {
+  return (
+    <div>
+      <Access />                
+    </div>
+  );
+}
+
+export default App;
+
+
+
+//main.jsx
+
+// src/main.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import App from './App';
+import store from './store';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>,
+);
+
